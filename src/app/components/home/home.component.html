@@ -1,0 +1,47 @@
+<h3 class="m-3">Que vols fer?</h3>
+
+<form class="px-4" [formGroup]="webForm">
+
+    <div class="form-check">
+        <input class="form-check-input" 
+            type="checkbox" 
+            formControlName="pagina"
+            id="paginaWeb">
+        <label class="form-check-label" for="paginaWeb">
+            Una pàgina web - 500€
+        </label>
+    </div>
+
+    <app-panell *ngIf="mostrarPanell()"></app-panell>
+
+    <div class="form-check">
+        <input class="form-check-input" 
+            type="checkbox" 
+            formControlName="consultoria"
+            id="consultoria">
+        <label class="form-check-label" for="consultoria">
+            Una consultoria SEO - 300€
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" 
+            type="checkbox" 
+            formControlName="campanya"
+            value="200"
+            id="campanya">
+        <label class="form-check-label" for="campanya">
+            Una campanya de Google Ads - 200€
+        </label>
+    </div>
+
+    <h5 class="my-3">Preu: <small> {{ preuTotal() }} € </small></h5>
+
+</form>
+
+
+<div class="text-danger mt-5">
+    <dl>
+        <dl>Form values</dl>
+        <dd> <pre>{{ webForm.value | json }} </pre> </dd>
+    </dl>
+</div>

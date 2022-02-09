@@ -1,0 +1,21 @@
+<div class="text-center">
+    <h1 class="my-4">Benvingut/da</h1>
+    <h3 class="my-3">En aquesta aplicació podràs generar un pressupost per la creació d'una pàgina web</h3>
+
+    <div class="row justify-content-center">
+        <div class="col-8 col-sm-5 col-md-4 bg-warning rounded-3 p-3 m-3" 
+            *ngFor="let carac of caracteristiques">
+
+            <h3><i class="bi bi-check-lg text-success fs-1"></i> {{ carac | titlecase }} </h3>
+        </div>
+    </div>
+
+    <div class="row justify-content-center my-5">
+        <h4 class="col-10">Es podran generar tants pressupostos com es desitjin i ordenar-los i gestionar-los de la manera que es vulgui.</h4>
+        <button type="button" 
+            class="btn btn-lg btn-success col-4 col-md-3 my-3"
+            (click)="mostrarHome()">
+            Començar
+        </button>
+    </div>
+</div>
