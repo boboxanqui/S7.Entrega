@@ -1,46 +1,46 @@
-<div class="row p-3 my-3 border border-2 border-secondary rounded-3">
-    <form [formGroup]="paginesForm">
-        <div class="my-2 row">
-            <label class="form-label my-auto col-auto" for="numPagines">Número de pàgines: </label>
-            <div class="col-auto ">
-                <div class="input-group">
-                    <button class="btn btn-sm btn-primary fw-bold"
-                        type="button"
-                        (click)="incrementar('pagines')">
-                        +</button>
-                    <input class="form-control text-center"
-                        type="number" 
-                        min="1"
-                        size="10"
-                        formControlName="pagines"
-                        (change)="enviarForm()">
-                    <button class="btn btn-sm btn-primary fw-bold"
-                        type="button"
-                        (click)="decrementar('pagines')">
-                        -</button>
-                </div>
+<form [formGroup]="paginesForm" class="row p-2 my-3 border">
+    <div class="my-2 row justify-content-center col-xl-10">
+        <label class="form-label my-2" 
+            for="numPagines" 
+            style="max-width: fit-content;">
+            Número de pàgines: 
+        </label>
+        <div class="input-group" style="max-width: fit-content;">
+            <button class="btn btn-sm btn-primary fw-bold"
+                type="button"
+                (click)="incrementar('pagines')">
+                +</button>
+            <input class="form-control text-center"
+                type="number" 
+                min="1"
+                size="10"
+                formControlName="pagines"
+                (change)="enviarForm()">
+            <button class="btn btn-sm btn-primary fw-bold"
+                type="button"
+                (click)="decrementar('pagines')">
+                -</button>
             </div>
+            <app-modal (click)="modalPagines( true )" style="max-width: fit-content;" class="p-0"></app-modal>
         </div>
 
-        <div class="my-2 row">
-            <label class="form-label my-auto col-auto" for="numPagines">Número d'idiomes: </label>
-            <div class="col-auto">
-                <div class="input-group">
-                    <button class="btn btn-sm btn-primary fw-bold"
-                        type="button"
-                        (click)="incrementar('idiomes')">
-                        +</button>
-                    <input class="form-control text-center"
-                        type="number"
-                        formControlName="idiomes"
-                        min="1"
-                        (change)="enviarForm()">
-                    <button class="btn btn-sm btn-primary fw-bold"
-                        type="button"
-                        (click)="decrementar('idiomes')">
-                        -</button>
+    <div class="my-2 row justify-content-center col-xl-10">
+        <label class="form-label my-2 col-auto" for="numPagines">Número d'idiomes: </label>
+            <div class="input-group" style="max-width: fit-content;">
+                <button class="btn btn-sm btn-primary fw-bold"
+                    type="button"
+                    (click)="incrementar('idiomes')">
+                    +</button>
+                <input class="form-control text-center"
+                    type="number"
+                    formControlName="idiomes"
+                    min="1"
+                    (change)="enviarForm()">
+                <button class="btn btn-sm btn-primary fw-bold"
+                    type="button"
+                    (click)="decrementar('idiomes')">
+                    -</button>
                 </div>
-            </div>
-        </div>
-    </form>
-</div>
+                <app-modal (click)="modalPagines( false )" style="max-width: fit-content;" class="p-0"></app-modal>
+    </div>
+</form>

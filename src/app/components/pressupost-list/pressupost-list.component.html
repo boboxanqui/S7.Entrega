@@ -1,0 +1,127 @@
+<h3 class="m-3 text-center">Pressupostos</h3>
+<hr>
+
+
+<!-- TABLE BOOTSTRAP -->
+
+<!-- <table class="table table-hover text-center" *ngIf=" pressupostList.length > 0; else capPressupost">
+
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Client</th>
+            <th scope="col">Preu</th>
+            <th scope="col">Detalls</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let pressu of pressupostList; let i = index" class="align-items-middle">
+            <td scope="row">{{ i + 1 }}</td>
+            <td> {{ pressu.nom | titlecase }} </td>
+            <td> {{ pressu.client | titlecase }} </td>
+            <td> {{ pressu.preu }} </td>
+            <td> <button class="btn" (click)="mostrarDetalls()"><i class="bi bi-caret-down-fill"></i></button></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Serveis:</td>
+            <td>Pagina WEb</td>
+            <td>300€</td>
+
+        </tr>
+    </tbody>
+
+</table> -->
+
+<!-- CUSTOM TABLE -->
+
+
+<div *ngIf=" mostrarLlista() ; else capPressupost">
+
+    <div class="row gap-3">
+        <form class="col-sm-6" [formGroup]="buscador">
+            <input type="text" 
+                class="form-control" 
+                formControlName="buscarNom"
+                placeholder="Filtrar per nom">
+        </form>
+        <div class="dropdown col text-end">
+            <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              Ordenar per
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" (click)="ordenarPerNom()">Nom</a></li>
+              <li><a class="dropdown-item" (click)="ordenarPerData()">Data</a></li>
+              <li><a class="dropdown-item" (click)="ordenarPerPreu()">Preu</a></li>
+              <li><a class="dropdown-item" (click)="ordenarPerInici()">Ordre inicial</a></li>
+            </ul>
+          </div>
+    </div>
+
+    <div class="row text-center fw-bold border-bottom border-2 border-dark mt-5">
+        <h5 class="col-1">#</h5>
+        <h5 class="col-3">Nom</h5>
+        <h5 class="col-3">Client</h5>
+        <h5 class="col-3">Preu</h5>
+        <h5 class="col-2">Detalls</h5>
+    </div>
+    <div class="row text-center align-items-center border-bottom" id="listItem" *ngFor="let pressu of pressupostList; let i = index">
+        <span class="col-1 py-3">{{ i + 1 }}</span>
+        <span class="col-3"> {{ pressu.nom | titlecase }} </span>
+        <span class="col-3"> {{ pressu.client | titlecase }} </span>
+        <span class="col-3"> {{ pressu.preu | number }} €</span>
+        <a class="col-2 text-warning" (click)="mostrarDetalls(i)">
+            <i [class]="detalls[i]? 'bi bi-caret-up' : 'bi bi-caret-down-fill'"></i>
+        </a>
+    
+        <div class="row text-muted" *ngIf="detalls[i]">
+            <div class="row">
+                <span class="col-1"></span>
+                <span class="col-3 text-end"> Data: </span>
+                <span class="col text-start"> 
+                    {{ pressu.data.toLocaleDateString() }} - 
+                    {{ pressu.data.toLocaleTimeString() }} 
+                </span>
+
+            </div>
+
+            <div class="row">
+                <span class="col-1"></span>
+                <span class="col-3 text-end"> Serveis: </span>
+                <div class="col text-start" >
+                    <div class="row" *ngIf="pressu.servei.pagina">
+                        <span class="col-6 ">
+                            {{ pressu.servei.pagines.pagines}}
+                            <span *ngIf="pressu.servei.pagines.pagines == 1; else pagines"> pàgina en</span>
+                            <ng-template #pagines> pàgines en</ng-template>
+                            {{ pressu.servei.pagines.idiomes}}
+                            <span *ngIf="pressu.servei.pagines.idiomes == 1; else idiomes"> idioma</span>
+                            <ng-template #idiomes>idiomes</ng-template>
+                        </span>
+                        <span class="col-6">
+                            {{ preuPagines(pressu) | number }} €
+                        </span>
+                    </div>
+                    <div class="row" *ngIf="pressu.servei.consultoria">
+                        <span class="col-6 ">Consultoria</span>
+                        <span class="col-6">300 €</span>
+                    </div>
+                    <div class="row" *ngIf="pressu.servei.campanya">
+                        <span class="col-6 ">Campanya Google Ads</span>
+                        <span class="col-6">200 €</span>
+                    </div>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <div *ngIf="pressupostList.length == 0">
+        <h4 class="text-center text-muted my-3">No hi ha cap concidencia</h4>
+    </div>
+</div>
+
+<!-- Sense pressupostos -->
+<ng-template #capPressupost>
+    <h4 class="text-center text-muted">Encara no hi ha cap pressupost creat</h4>
+</ng-template>

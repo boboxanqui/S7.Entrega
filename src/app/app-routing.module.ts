@@ -15,10 +15,6 @@ const routes: Routes = [
         component: HomeComponent
     },
     {
-        path:'modal',
-        component:ModalComponent
-    },
-    {
         path:'**',
         redirectTo:'benvinguda'
     }

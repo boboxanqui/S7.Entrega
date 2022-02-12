@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { PressupostService } from 'src/app/services/pressupost.service';
@@ -17,18 +17,38 @@ import { PressupostService } from 'src/app/services/pressupost.service';
     }
   `]
 })
-export class PanellComponent {
+export class PanellComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
     private pressupostService: PressupostService
   ) { }
 
+  ngOnInit(): void {
+
+    this.paginesForm.reset({
+      pagines: 1,
+      idiomes: 1
+    })
+    this.enviarForm()
+  }
+
+  ngOnDestroy(): void {
+    this.paginesForm.reset({
+      pagines: 1,
+      idiomes: 1
+    })
+    this.enviarForm()
+  }
 
   paginesForm: FormGroup = this.fb.group({
-    pagines: [1, [Validators.min(1), Validators.required]],
-    idiomes: [1, [Validators.min(1), Validators.required]]
+    pagines: [0, [Validators.min(1), Validators.required]],
+    idiomes: [0, [Validators.min(1), Validators.required]]
   })
+
+  modalPagines(textPagines: boolean) {
+    this.pressupostService.setModalText(textPagines)
+  }
 
   enviarForm() {
     this.pressupostService.setPaginesForm(this.paginesForm.value)

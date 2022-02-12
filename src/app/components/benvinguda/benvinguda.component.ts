@@ -11,7 +11,7 @@ export class BenvingudaComponent {
 
   constructor( private router: Router ) { }
 
-  caracteristiques: string[] = [ 'multipagina', 'multiidoma', 'consultoria', 'Google Ads']
+  caracteristiques: string[] = [ 'Multipagina', 'Multiidoma', 'SEO', 'Google Ads']
 
   mostrarHome(){
     this.router.navigate(['home'])

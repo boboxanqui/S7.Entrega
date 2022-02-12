@@ -1,16 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { PressupostService } from 'src/app/services/pressupost.service';
 
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
-  styles: [
-  ]
+  styles: [`
+    a{
+      cursor: pointer;
+    }
+  `]
 })
-export class ModalComponent implements OnInit {
+export class ModalComponent {
 
-  constructor() { }
+  constructor( private pressupostService: PressupostService ) { }
 
-  ngOnInit(): void {
+
+  //FIXME: quan es tanca modal amb idiomes es canvia a pagines
+
+  mostrarText() {
+    if (this.pressupostService.modalText) {
+      return 'Indica el número de pàgines que voldràs que tingui la teva web.'
+    }
+    return 'Indica el número d\'idiomes que voldràs a la teva web'
   }
-
 }

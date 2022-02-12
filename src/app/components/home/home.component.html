@@ -1,47 +1,86 @@
-<h3 class="m-3">Que vols fer?</h3>
+<div class="row">
+    <div class="col-md-6 col-xl-5">
+        <h3 class="m-3 text-center">Nou pressupot</h3>
+        <hr>
+        
+        <form class="px-4" [formGroup]="webForm" (ngSubmit)="guardar()">
 
-<form class="px-4" [formGroup]="webForm">
+            <div class="form-floating mb-3">
+                <input type="text" 
+                    class="form-control" 
+                    id="floatingInput" 
+                    placeholder="Nom"
+                    formControlName="nom">
+                <label for="floatingInput">Nom</label>
+                <span class="text-danger ms-2"
+                    *ngIf="campValid('nom')">Nom del pressupost obligatori.</span>
+            </div>
 
-    <div class="form-check">
-        <input class="form-check-input" 
-            type="checkbox" 
-            formControlName="pagina"
-            id="paginaWeb">
-        <label class="form-check-label" for="paginaWeb">
-            Una pàgina web - 500€
-        </label>
+            <div class="form-floating mb-4">
+                <input type="text" 
+                    class="form-control" 
+                    id="floatingPassword" 
+                    placeholder="Client"
+                    formControlName="client">
+                <label for="floatingPassword">Client</label>
+                <span class="text-danger ms-2"
+                    *ngIf="campValid('client')">Client del pressupost obligatori.</span>
+
+            </div>
+
+            <h4 class="my-4">Que vols fer?</h4>
+        
+            <div class="form-check my-2">
+                <input class="form-check-input" 
+                    type="checkbox" 
+                    formControlName="pagina"
+                    id="paginaWeb">
+                <label class="form-check-label" for="paginaWeb">
+                    Una pàgina web - 500€
+                </label>
+            </div>
+        
+            <app-panell *ngIf="mostrarPanell()"></app-panell>
+        
+            <div class="form-check my-2">
+                <input class="form-check-input" 
+                    type="checkbox" 
+                    formControlName="consultoria"
+                    id="consultoria">
+                <label class="form-check-label" for="consultoria">
+                    Una consultoria SEO - 300€
+                </label>
+            </div>
+            <div class="form-check my-2">
+                <input class="form-check-input" 
+                    type="checkbox" 
+                    formControlName="campanya"
+                    value="200"
+                    id="campanya">
+                <label class="form-check-label" for="campanya">
+                    Una campanya de Google Ads - 200€
+                </label>
+            </div>
+        
+            <h5 class="mt-3">Preu: <small> {{ preuTotal() | number }} € </small></h5>
+            <span class="text-danger ms-2"
+                *ngIf="preuTotal() == 0 && mostrarError">Cal escollir mínim 1 servei.</span>
+
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary ">Guardar</button>
+            </div>
+        
+        </form>
+        
+        <!-- <div class="text-danger mt-5">
+            <dl>
+                <dl>Form values</dl>
+                <dd> <pre>{{ webForm.value | json }} </pre> </dd>
+            </dl>
+        </div> -->
     </div>
-
-    <app-panell *ngIf="mostrarPanell()"></app-panell>
-
-    <div class="form-check">
-        <input class="form-check-input" 
-            type="checkbox" 
-            formControlName="consultoria"
-            id="consultoria">
-        <label class="form-check-label" for="consultoria">
-            Una consultoria SEO - 300€
-        </label>
+    
+    <div class="col">
+        <app-pressupost-list></app-pressupost-list>
     </div>
-    <div class="form-check">
-        <input class="form-check-input" 
-            type="checkbox" 
-            formControlName="campanya"
-            value="200"
-            id="campanya">
-        <label class="form-check-label" for="campanya">
-            Una campanya de Google Ads - 200€
-        </label>
-    </div>
-
-    <h5 class="my-3">Preu: <small> {{ preuTotal() }} € </small></h5>
-
-</form>
-
-
-<div class="text-danger mt-5">
-    <dl>
-        <dl>Form values</dl>
-        <dd> <pre>{{ webForm.value | json }} </pre> </dd>
-    </dl>
 </div>
