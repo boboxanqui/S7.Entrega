@@ -1,43 +1,6 @@
 <h3 class="mt-5 mt-md-3 text-center">Pressupostos</h3>
 <hr>
 
-
-<!-- TABLE BOOTSTRAP -->
-
-<!-- <table class="table table-hover text-center" *ngIf=" pressupostList.length > 0; else capPressupost">
-
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Nom</th>
-            <th scope="col">Client</th>
-            <th scope="col">Preu</th>
-            <th scope="col">Detalls</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        <tr *ngFor="let pressu of pressupostList; let i = index" class="align-items-middle">
-            <td scope="row">{{ i + 1 }}</td>
-            <td> {{ pressu.nom | titlecase }} </td>
-            <td> {{ pressu.client | titlecase }} </td>
-            <td> {{ pressu.preu }} </td>
-            <td> <button class="btn" (click)="mostrarDetalls()"><i class="bi bi-caret-down-fill"></i></button></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>Serveis:</td>
-            <td>Pagina WEb</td>
-            <td>300€</td>
-
-        </tr>
-    </tbody>
-
-</table> -->
-
-<!-- CUSTOM TABLE -->
-
-
 <div *ngIf=" mostrarLlista() ; else capPressupost">
 
     <div class="row gap-3">
@@ -76,6 +39,7 @@
             <i [class]="detalls[i]? 'bi bi-caret-up' : 'bi bi-caret-down-fill'"></i>
         </a>
     
+         <!-- Desplegable Detalls -->
         <div class="row text-muted" *ngIf="detalls[i]">
             <div class="row">
                 <span class="col-1"></span>
@@ -116,6 +80,8 @@
             </div>
         </div>   
     </div>
+
+    <!-- Sense resultats al filtrar per nom -->
     <div *ngIf="pressupostList.length == 0">
         <h4 class="text-center text-muted my-3">No hi ha cap concidencia</h4>
     </div>

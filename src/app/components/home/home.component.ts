@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { PressupostService } from 'src/app/services/pressupost.service';
 
-import { pressupost } from '../interfaces/web.interfaces';
+import { paginesForm, pressupost } from '../interfaces/web.interfaces';
 
 
 @Component({
@@ -11,25 +12,55 @@ import { pressupost } from '../interfaces/web.interfaces';
   templateUrl: './home.component.html',
   styleUrls: []
 })
-export class HomeComponent  {
+export class HomeComponent implements OnInit {
 
-  constructor( 
+  constructor(
     private fb: FormBuilder,
     private pressupostService: PressupostService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) { }
+
+  ngOnInit(): void {
+
+    this.webForm.reset({
+      nom: this.activatedRoute.snapshot.queryParamMap.get('nom'),
+      client: this.activatedRoute.snapshot.queryParamMap.get('client'),
+      pagina: this.activatedRoute.snapshot.queryParamMap.get('pagina'),
+      consultoria: this.activatedRoute.snapshot.queryParamMap.get('consultoria'),
+      campanya: this.activatedRoute.snapshot.queryParamMap.get('campanya'),
+    })
+
+    this.webForm.valueChanges.subscribe( () => {
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: {
+          nom: this.webForm.get('nom')?.value,
+          client: this.webForm.get('client')?.value,
+          pagina: this.webForm.get('pagina')?.value,
+          pagines: this.pressupostService.paginesForm.pagines,
+          idiomes: this.pressupostService.paginesForm.idiomes,
+          consultoria: this.webForm.get('consultoria')?.value,
+          campanya: this.webForm.get('campanya')?.value,
+        },
+        replaceUrl: true,
+        queryParamsHandling: 'merge'
+      })
+    })
+  }
 
   webForm: FormGroup = this.fb.group({
     nom: ['', [Validators.required]],
     client: ['', [Validators.required]],
     pagina: [false],
     consultoria: [false],
-    campanya: [false]
+    campanya: [false],
   })
 
   mostrarError: boolean = false;
 
   preuTotal(): number {
-    this.pressupostService.setWebFormChecks( this.webForm.value )
+    this.pressupostService.setWebFormChecks(this.webForm.value)
 
     return this.pressupostService.pressupostTotal();
   }
@@ -38,17 +69,17 @@ export class HomeComponent  {
     return this.webForm.controls['pagina'].value;
   }
 
-  campValid ( camp: string ){
+  campValid(camp: string) {
     return this.webForm.controls[camp].invalid && this.mostrarError;
   }
 
   guardar() {
 
-    if( this.webForm.invalid || this.preuTotal() == 0 ){
+    if (this.webForm.invalid || this.preuTotal() == 0) {
       this.mostrarError = true;
       return
     }
-   let nouPressupost: pressupost = {
+    let nouPressupost: pressupost = {
       nom: this.webForm.get('nom')?.value,
       client: this.webForm.get('client')?.value,
       servei: {
@@ -66,7 +97,8 @@ export class HomeComponent  {
     this.pressupostService.pushPressupost(nouPressupost);
     this.webForm.reset();
     this.mostrarError = false;
+
   }
 
-  
+
 }

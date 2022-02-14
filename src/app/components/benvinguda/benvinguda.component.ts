@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PressupostService } from 'src/app/services/pressupost.service';
 
 @Component({
   selector: 'app-benvinguda',
@@ -9,12 +10,28 @@ import { Router } from '@angular/router';
 })
 export class BenvingudaComponent {
 
-  constructor( private router: Router ) { }
+  constructor( 
+    private router: Router,
+    private presssupostService: PressupostService
+  ) { }
 
   caracteristiques: string[] = [ 'Multipagina', 'Multiidoma', 'SEO', 'Google Ads']
 
   mostrarHome(){
-    this.router.navigate(['home'])
+    this.router.navigate(['home'], {
+      // queryParams: {
+      //   nom: '',
+      //   client: '',
+      //   pagina: false,
+      //   pagines: 1,
+      //   idiomes: 1,
+      //   consultoria: false,
+      //   campanya: false,
+      // },
+      // replaceUrl: true,
+      // queryParamsHandling: 'merge',
+      
+    })
   }
 
 }

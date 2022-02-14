@@ -10,7 +10,7 @@ import { PressupostService } from 'src/app/services/pressupost.service';
     }
   `]
 })
-export class ModalComponent {
+export class ModalComponent  {
 
   constructor( private pressupostService: PressupostService ) { }
 
@@ -18,9 +18,6 @@ export class ModalComponent {
   //FIXME: quan es tanca modal amb idiomes es canvia a pagines
 
   mostrarText() {
-    if (this.pressupostService.modalText) {
-      return 'Indica el número de pàgines que voldràs que tingui la teva web.'
-    }
-    return 'Indica el número d\'idiomes que voldràs a la teva web'
+    return this.pressupostService.modalText
   }
 }

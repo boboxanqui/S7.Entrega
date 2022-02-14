@@ -13,14 +13,13 @@
                 type="number" 
                 min="1"
                 size="10"
-                formControlName="pagines"
-                (change)="enviarForm()">
+                formControlName="pagines">
             <button class="btn btn-sm btn-primary fw-bold"
                 type="button"
                 (click)="decrementar('pagines')">
                 -</button>
             </div>
-            <app-modal (click)="modalPagines( true )" style="max-width: fit-content;" class="p-0"></app-modal>
+            <app-modal (click)="modalPagines( 'pagines' )" style="max-width: fit-content;" class="p-0"></app-modal>
         </div>
 
     <div class="my-2 row align-items-end">
@@ -36,13 +35,12 @@
                 <input class="form-control text-center"
                     type="number"
                     formControlName="idiomes"
-                    min="1"
-                    (change)="enviarForm()">
+                    min="1">
                 <button class="btn btn-sm btn-primary fw-bold"
                     type="button"
                     (click)="decrementar('idiomes')">
                     -</button>
                 </div>
-                <app-modal (click)="modalPagines( false )" style="max-width: fit-content;" class="p-0"></app-modal>
+                <app-modal (click)="modalPagines( 'idiomes' )" style="max-width: fit-content;" class="p-0"></app-modal>
     </div>
 </form>

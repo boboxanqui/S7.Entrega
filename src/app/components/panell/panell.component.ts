@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { PressupostService } from 'src/app/services/pressupost.service';
 
@@ -21,16 +22,18 @@ export class PanellComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private pressupostService: PressupostService
+    private pressupostService: PressupostService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-
     this.paginesForm.reset({
       pagines: 1,
       idiomes: 1
     })
-    this.enviarForm()
+    this.paginesForm.valueChanges.subscribe( () => {
+      this.pressupostService.setPaginesForm(this.paginesForm.value)
+    })
   }
 
   ngOnDestroy(): void {
@@ -38,7 +41,6 @@ export class PanellComponent implements OnInit, OnDestroy {
       pagines: 1,
       idiomes: 1
     })
-    this.enviarForm()
   }
 
   paginesForm: FormGroup = this.fb.group({
@@ -46,23 +48,23 @@ export class PanellComponent implements OnInit, OnDestroy {
     idiomes: [0, [Validators.min(1), Validators.required]]
   })
 
-  modalPagines(textPagines: boolean) {
-    this.pressupostService.setModalText(textPagines)
-  }
-
-  enviarForm() {
-    this.pressupostService.setPaginesForm(this.paginesForm.value)
+  modalPagines(text: string) {
+    if (text === 'idiomes' ) {
+      this.pressupostService.setModalText('Indica el número d\'idiomes que voldràs a la teva web.')
+    }
+    if ( text === 'pagines'){
+      this.pressupostService.setModalText('Indica el número de pàgines que voldràs que tingui la teva web.')
+    }
+    
   }
 
   incrementar(form: string) {
     this.paginesForm.controls[form].setValue(this.paginesForm.get(form)?.value + 1);
-    this.enviarForm()
   }
 
   decrementar(form: string) {
     if (this.paginesForm.get(form)?.value > 1) {
       this.paginesForm.controls[form].setValue(this.paginesForm.get(form)?.value - 1);
-      this.enviarForm()
     }
   }
 
