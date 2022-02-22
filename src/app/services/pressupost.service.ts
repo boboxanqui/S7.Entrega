@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
-import { FormGroup } from "@angular/forms";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { paginesForm, pressupost, webForm } from "../components/interfaces/web.interfaces";
 
 
@@ -20,6 +19,7 @@ export class PressupostService {
         pagines: 1,
         idiomes: 1
     }
+    private _paginesForm$ = new Subject<paginesForm>();
     private _modalText: string = '';
     private _pressupostArr: pressupost[] = [];
 
@@ -30,6 +30,10 @@ export class PressupostService {
 
     get paginesForm(): paginesForm {
         return this._paginesForm;
+    }
+
+    get paginesForm$(): Observable<paginesForm> {
+        return this._paginesForm$.asObservable();
     }
 
     get modalText(): string {
@@ -44,8 +48,14 @@ export class PressupostService {
         this._webFormChecks = webForm;
     }
 
-    setPaginesForm(paginesForm: paginesForm) {
-        this._paginesForm = paginesForm;
+    // setPaginesForm(paginesForm: paginesForm) {
+    //     this._paginesForm = paginesForm;
+    // }
+
+    setPaginesForm$(paginesForm: paginesForm){
+        this._paginesForm$.next(paginesForm);
+        this._paginesForm.pagines = paginesForm.pagines;        
+        this._paginesForm.idiomes = paginesForm.idiomes;        
     }
 
     setModalText(text: string) {

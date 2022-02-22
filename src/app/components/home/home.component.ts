@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { PressupostService } from 'src/app/services/pressupost.service';
 
@@ -12,7 +13,7 @@ import { paginesForm, pressupost } from '../interfaces/web.interfaces';
   templateUrl: './home.component.html',
   styleUrls: []
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
@@ -23,7 +24,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.webForm.reset({
+    // Inicia con valores del URL
+    this.webForm.setValue({
       nom: this.activatedRoute.snapshot.queryParamMap.get('nom'),
       client: this.activatedRoute.snapshot.queryParamMap.get('client'),
       pagina: this.activatedRoute.snapshot.queryParamMap.get('pagina'),
@@ -31,22 +33,45 @@ export class HomeComponent implements OnInit {
       campanya: this.activatedRoute.snapshot.queryParamMap.get('campanya'),
     })
 
-    this.webForm.valueChanges.subscribe( () => {
+    // Recoge valores del Formulario de paginas y idiomas para cargar precio
+    this.paginesForm = {
+      pagines: Number(this.activatedRoute.snapshot.queryParamMap.get('pagines')) || 1 ,
+      idiomes: Number(this.activatedRoute.snapshot.queryParamMap.get('idiomes')) || 1    
+    }
+    this.pressupostService.setPaginesForm$(this.paginesForm)
+
+    // Añade queryParams del Formulario de paginas y idiomas
+    this._paginesFormSub = this.pressupostService.paginesForm$.subscribe( observer => {    
+      this.paginesForm = observer;
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: {
+          pagines: this.paginesForm.pagines == 1 ? null : this.paginesForm.pagines,
+          idiomes: this.paginesForm.idiomes == 1 ? null : this.paginesForm.idiomes,
+          },
+        queryParamsHandling: 'merge'
+      })
+    })
+
+    // Añade queryParams del Formulario de nuevo presupuesto
+    this._webFormSub = this.webForm.valueChanges.subscribe( (_) => {
       this.router.navigate([], {
         relativeTo: this.activatedRoute,
         queryParams: {
           nom: this.webForm.get('nom')?.value,
           client: this.webForm.get('client')?.value,
-          pagina: this.webForm.get('pagina')?.value,
-          pagines: this.pressupostService.paginesForm.pagines,
-          idiomes: this.pressupostService.paginesForm.idiomes,
-          consultoria: this.webForm.get('consultoria')?.value,
-          campanya: this.webForm.get('campanya')?.value,
-        },
-        replaceUrl: true,
+          pagina: (this.webForm.get('pagina')?.value==false || this.webForm.get('pagina')?.value==null) ? null : true,
+          consultoria: (this.webForm.get('consultoria')?.value==false || this.webForm.get('consultoria')?.value==null) ? null : true,
+          campanya: (this.webForm.get('campanya')?.value==false || this.webForm.get('campanya')?.value==null) ? null : true,
+          },
         queryParamsHandling: 'merge'
       })
     })
+  }
+
+  ngOnDestroy(): void {
+    this._webFormSub.unsubscribe();
+    this._paginesFormSub.unsubscribe();
   }
 
   webForm: FormGroup = this.fb.group({
@@ -56,6 +81,15 @@ export class HomeComponent implements OnInit {
     consultoria: [false],
     campanya: [false],
   })
+
+  paginesForm: paginesForm = {
+    pagines: 1,
+    idiomes: 1
+  }
+
+  // Objetos Subscription para gestionar los subscribe() del onInit
+  private _webFormSub: Subscription = new Subscription;
+  private _paginesFormSub: Subscription = new Subscription;
 
   mostrarError: boolean = false;
 
